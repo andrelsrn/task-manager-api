@@ -5,38 +5,6 @@ from . import models
 from . import schemas
 from .auth import get_password_hash
 
-# ----- Usuários -----
-
-# Buscar usuario pelo ID
-def get_user(user_id: int, db: Session):
-    hashed_password = get_password_hash(user.password)
-    db_user = models.User(..., hashed_password=hashed_password)
-    return db.query(User).filter(User.id == user_id).first()
-
-
-# Listar todos usuarios
-def get_users(db: Session):
-    return db.query(User).all()
-
-
-# Criar usuario
-def create_user(user: schemas.UserCreate, db: Session):
-    db_user = User(name=user.name, role=user.role,
-                   email=user.email, hashed_password=user.hashed_password)
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
-
-
-# Atualizar usuario
-from src.models import User, Task, Role, TaskStatus, TaskPriority
-from .database import SessionLocal, engine
-from sqlalchemy.orm import Session
-from . import models
-from . import schemas
-from .auth import get_password_hash
-
 
 # ----- Usuários -----
 
@@ -49,11 +17,9 @@ def get_user_by_email(email: str, db: Session):
     return db.query(models.User).filter(models.User.email == email).first()
 
 
-
 # Listar todos usuarios
 def get_users(db: Session):
     return db.query(User).all()
-
 
 
 # Criar usuario
@@ -65,7 +31,6 @@ def create_user(user: schemas.UserCreate, db: Session):
     db.commit()
     db.refresh(db_user)
     return db_user
-
 
 
 # Atualizar usuario
