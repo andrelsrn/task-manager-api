@@ -47,7 +47,7 @@ class Task(Base):
     priority = Column(SQLAlchemyEnum(TaskPriority))
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now())
-    completed_at = Column(DateTime, server_default=func.now())
+    completed_at = Column(DateTime, nullable=True) # Should only be set when task is completed
 
     # Relacionamento com a classe User
     assignee = relationship("User", back_populates="tasks")
