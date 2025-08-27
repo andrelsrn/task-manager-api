@@ -49,6 +49,13 @@ class Task(TaskBase):
     class Config:
         from_attributes = True
 
+class TaskUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    status: Optional[TaskStatus] = None
+    priority: Optional[TaskPriority] = None
+    due_date: Optional[datetime] = None
+
 # ===================
 # Schema para Relações
 # ===================

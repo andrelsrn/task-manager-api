@@ -63,3 +63,44 @@ def delete_user(user_id: int, db: Session):
         db.delete(db_user)
         db.commit()
     return db_user
+
+
+# ----- Tarefas -----
+
+# Criar tarefa
+def create_task(task: schemas.TaskCreate, db: Session):
+    db_task = models.Task(**task.model_dump())
+    db.add(db_task)
+    db.commit()
+    db.refresh(db_task)
+    return db_task
+
+# Buscar tarefa pelo ID
+def get_task(task_id: int, db: Session):
+    return db.query(models.Task).filter(models.Task.id == task_id).first()
+
+# Listar todas as tarefas
+def get_tasks(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Task).offset(skip).limit(limit).all()
+
+# Atualizar tarefa
+def update_task(task_id: int, task: schemas.TaskUpdate, db: Session):
+    db_task = db.query(models.Task).filter(models.Task.id == task_id).first()
+    if not db_task:
+        return None
+    
+    update_data = task.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_task, key, value)
+    
+    db.commit()
+    db.refresh(db_task)
+    return db_task
+
+# Deletar tarefa
+def delete_task(task_id: int, db: Session):
+    db_task = db.query(models.Task).filter(models.Task.id == task_id).first()
+    if db_task:
+        db.delete(db_task)
+        db.commit()
+    return db_task
